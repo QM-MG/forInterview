@@ -1,3 +1,4 @@
+// 订阅发布模式
 class Bus {
     constructor () {
       this.callbacks = {}

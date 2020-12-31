@@ -1,6 +1,7 @@
 function Compile(el, vm) {
     this.vm = vm;
     this.el = document.querySelector(el);
+    // console.log(123, this.el)
     this.fragment = null;
     this.init();
 }
@@ -8,7 +9,7 @@ function Compile(el, vm) {
 Compile.prototype = {
     init: function () {
         if (this.el) {
-            this.fragment = this.nodeToFragment(this.el);
+            this.fragment = this.nodeToFragment(this.el); // 虚拟dom
             this.compileElement(this.fragment);
             this.el.appendChild(this.fragment);
         } else {
@@ -17,6 +18,7 @@ Compile.prototype = {
     },
     nodeToFragment: function (el) {
         var fragment = document.createDocumentFragment();
+        // console.log(fragment)
         var child = el.firstChild;
         while (child) {
             // 将Dom元素移入fragment中
@@ -31,9 +33,9 @@ Compile.prototype = {
         [].slice.call(childNodes).forEach(function(node) {
             var reg = /\{\{(.*)\}\}/;
             var text = node.textContent;
-
-            if (self.isElementNode(node)) {  
-                self.compile(node);
+        // console.log(node, text)
+            if (self.isElementNode(node)) {  // 区分编译节点 或者文字
+                self.compile(node); 
             } else if (self.isTextNode(node) && reg.test(text)) {
                 self.compileText(node, reg.exec(text)[1]);
             }
@@ -61,9 +63,11 @@ Compile.prototype = {
         });
     },
     compileText: function(node, exp) {
+        // console.log(node)
         var self = this;
         var initText = this.vm[exp];
         this.updateText(node, initText);
+        console.log(0.1)
         new Watcher(this.vm, exp, function (value) {
             self.updateText(node, value);
         });
@@ -77,10 +81,11 @@ Compile.prototype = {
         }
     },
     compileModel: function (node, vm, exp, dir) {
-        // console.log(node, vm, exp, dir)
+        console.log(node, vm, exp, dir)
         var self = this;
         var val = this.vm[exp];
         this.modelUpdater(node, val);
+        console.log(0.2)
         new Watcher(this.vm, exp, function (value) {
             self.modelUpdater(node, value);
         });
