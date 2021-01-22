@@ -10,10 +10,10 @@ Compile.prototype = {
     init: function () {
         if (this.el) {
             this.fragment = this.nodeToFragment(this.el); // 虚拟dom
-            this.compileElement(this.fragment);
-            this.el.appendChild(this.fragment);
+            this.compileElement(this.fragment); // 解析指令 
+            this.el.appendChild(this.fragment); // 渲染页面
         } else {
-            console.log('Dom元素不存在');
+            // console.log('Dom元素不存在');
         }
     },
     nodeToFragment: function (el) {
@@ -33,7 +33,7 @@ Compile.prototype = {
         [].slice.call(childNodes).forEach(function(node) {
             var reg = /\{\{(.*)\}\}/;
             var text = node.textContent;
-        // console.log(node, text)
+            // console.log(node, text)
             if (self.isElementNode(node)) {  // 区分编译节点 或者文字
                 self.compile(node); 
             } else if (self.isTextNode(node) && reg.test(text)) {
@@ -63,16 +63,16 @@ Compile.prototype = {
         });
     },
     compileText: function(node, exp) {
-        // console.log(node)
         var self = this;
         var initText = this.vm[exp];
         this.updateText(node, initText);
-        console.log(0.1)
         new Watcher(this.vm, exp, function (value) {
+            // console.log(value)
             self.updateText(node, value);
         });
     },
     compileEvent: function (node, vm, exp, dir) {
+        // console.log(node, vm, exp, dir)
         var eventType = dir.split(':')[1];
         var cb = vm.methods && vm.methods[exp];
 
@@ -81,11 +81,10 @@ Compile.prototype = {
         }
     },
     compileModel: function (node, vm, exp, dir) {
-        console.log(node, vm, exp, dir)
         var self = this;
         var val = this.vm[exp];
         this.modelUpdater(node, val);
-        console.log(0.2)
+        // 添加订阅者
         new Watcher(this.vm, exp, function (value) {
             self.modelUpdater(node, value);
         });
