@@ -10,7 +10,7 @@ class Promise {
     }
     // 当前的promise状态已经变成了resolve,要执行后续操作
     triggerResolve(val) { // triggerResolve: reslove
-        // 注册then里的代码 才是知道回调什么
+        // 注册then里的代码 才知道回调什么
         setTimeout(() => {
             if (this.status !== 'pending') {
                 return;
@@ -39,8 +39,7 @@ class Promise {
     triggerReject() {
     }
     // promise 方法 onFulfilled 注册的回调函数 onNextFulfilled 新的回调函数
-    then(onFulfilled, onRejected) {
-        const {value, status} = this;
+    then(onFulfilled, onRejected) {  //   promise.then(function(str){console.log(str); return str })
         return new Promise((onNextFulfilled, onNextRejected) => {
             // 实现链式调用 // val 为hello word
             function onFinalFulfilled(val) {
