@@ -14,3 +14,4 @@ function throttle(fn) {
     console.log(e.target.innerWidth, e.target.innerHeight);
   }
   window.addEventListener('resize', throttle(sayHi));
+

@@ -26,3 +26,4 @@ function cloneDeep4(source, hash = new WeakMap()) {
     }
     return target;
 }
+
