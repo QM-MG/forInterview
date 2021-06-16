@@ -3,10 +3,12 @@ class Bus {
     constructor () {
       this.callbacks = {}
     }
+    // push
     $on(name,fn) {
       this.callbacks[name] = this.callbacks[name] || []
       this.callbacks[name].push(fn)
     }
+    // 执行
     $emit(name,args) {
       if(this.callbacks[name]){
          //存在遍历所有callback
