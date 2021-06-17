@@ -1,7 +1,17 @@
+https://zhuanlan.zhihu.com/p/58428287
+
+// 调用 then 方法，将想要在 Promise 异步操作成功时执行的 onFulfilled 放入callbacks队列，
+// 其实也就是注册回调函数，可以向观察者模式方向思考；
+// 创建 Promise 实例时传入的函数会被赋予一个函数类型的参数，
+// 即 resolve，它接收一个参数 value，代表异步操作返回的结果，当异步操作执行成功后，
+// 会调用resolve方法，这时候其实真正执行的操作是将 callbacks 队列中的回调一一执行；
+
+
 require('@babel/register');
 // promise 源码
 class Promise {
     constructor(handleFunc) {
+        console.log(1)
         this.status = 'pending';
         this.value = undefined;
         this.fulfilledList = [];
@@ -10,6 +20,7 @@ class Promise {
     }
     // 当前的promise状态已经变成了resolve,要执行后续操作
     triggerResolve(val) { // triggerResolve: reslove
+        console.log(2)
         // 注册then里的代码 才知道回调什么
         setTimeout(() => {
             if (this.status !== 'pending') {
@@ -31,6 +42,7 @@ class Promise {
     }
     // 依次执行回调
     triggeFulfilled(val) { // hello world
+        console.log(3)
         this.fulfilledList.forEach(item => { // item: onFinalFulfilled
             item(val);
         })
@@ -40,9 +52,11 @@ class Promise {
     }
     // promise 方法 onFulfilled 注册的回调函数 onNextFulfilled 新的回调函数
     then(onFulfilled, onRejected) {  //   promise.then(function(str){console.log(str); return str })
+        console.log(4)
         return new Promise((onNextFulfilled, onNextRejected) => {
             // 实现链式调用 // val 为hello word
             function onFinalFulfilled(val) {
+                console.log(5)
                 if (typeof onFulfilled !== 'function') {
                     onNextFulfilled(val)
                 }
@@ -59,11 +73,13 @@ class Promise {
             }
             switch(status) {
                 case 'pending': {
+                    console.log(6)
                     this.fulfilledList.push(onFinalFulfilled)
                     this.rejectedList.push(onRejected)
                     break;
                 }
                 case 'fulfilled':{
+                    console.log(7)
                     onFinalFulfilled(value)
                     break;
                   }
@@ -76,6 +92,7 @@ class Promise {
     }
     // promise 实例上的方法
     static resolve(value) { // value promoise
+        console.log(8)
         if (value instanceof Promise) {
             return value;
         }
@@ -109,21 +126,21 @@ class Promise {
     }
 
 }
-// const promise = new Promise(function(resolve,reject){
-//     resolve('lsh')
-//   })
-//   promise
-//   .then(function(str){console.log(str); return str })
-//   .then(function(str2){console.log('resolve2',str2)})
+const promise = new Promise(function(resolve,reject){
+    resolve('lsh')
+  })
+  promise
+  .then(function(str){console.log(str); return str })
+  .then(function(str2){console.log('resolve2',str2)})
   
 // test promise
 
-const promise = function(time) {
-    return new Promise(function(resolve, reject) {
-        return setTimeout(resolve, time)
-    })
-}
-Promise.all([promise(1000), promise(2000)])
-.then(function() {
-    console.log('all')
-})
+// const promise = function(time) {
+//     return new Promise(function(resolve, reject) {
+//         return setTimeout(resolve, time)
+//     })
+// }
+// Promise.all([promise(1000), promise(2000)])
+// .then(function() {
+//     console.log('all')
+// })

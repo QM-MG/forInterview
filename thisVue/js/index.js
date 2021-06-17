@@ -21,7 +21,7 @@ function SelfVue (options) {
     new Compile(options.el, this);
     options.mounted.call(this); // 所有事情处理好后执行mounted函数
 }
-
+// 可以通过this.xxx 来更改 this.$data.xxx 的结果
 SelfVue.prototype = {
     proxyKeys: function (key) {
         var self = this;
@@ -32,7 +32,11 @@ SelfVue.prototype = {
                 return self.data[key]; // 取值从data里取
             },
             set: function setter (newVal) {
+<<<<<<< HEAD
                 self.data[key] = newVal; // 改时将data里的值改掉
+=======
+                self.data[key] = newVal; 
+>>>>>>> 828043749074185616971c1d060581637f90b01d
             }
         });
     }
