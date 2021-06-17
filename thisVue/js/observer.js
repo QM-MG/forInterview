@@ -1,5 +1,4 @@
 function Observer(data) {
-
     this.data = data;
     this.walk(data);
 }
@@ -14,7 +13,6 @@ Observer.prototype = {
     defineReactive: function(data, key, val) {
         var dep = new Dep();
         var childObj = observe(val);
-        // console.log(2,data, key, val)
         Object.defineProperty(data, key, {
             enumerable: true,
             configurable: true,

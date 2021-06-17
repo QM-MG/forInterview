@@ -29,10 +29,10 @@ SelfVue.prototype = {
             enumerable: false,
             configurable: true,
             get: function getter () {
-                return self.data[key];
+                return self.data[key]; // 取值从data里取
             },
             set: function setter (newVal) {
-                self.data[key] = newVal;
+                self.data[key] = newVal; // 改时将data里的值改掉
             }
         });
     }
