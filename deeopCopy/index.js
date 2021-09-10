@@ -1,6 +1,6 @@
 function cloneDeep4(source, hash = new WeakMap()) {
     if (!isObject(source)) return source;
-    // 解决循环引用
+    // 解决循环引用 a.b = a
     if (hash.has(source)) return hash.get(source); 
     let target = Array.isArray(source) ? [] : {};
     hash.set(source, target);
