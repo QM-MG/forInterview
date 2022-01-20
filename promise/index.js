@@ -144,3 +144,5 @@ const promise = new Promise(function(resolve,reject){
 // .then(function() {
 //     console.log('all')
 // })
+
+

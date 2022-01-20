@@ -15,6 +15,15 @@ class Bus {
          this.callbacks[name].forEach(cb => cb(args))
       }
     }
+	// 删除
+	$off(name, fn) {
+		if(this.callbacks[name]){
+			this.callbacks[name].filter(cb => {
+				return cb !== fn
+			})
+		}
+		
+	}
   }
 
 const EventBus = new EventBusClass()

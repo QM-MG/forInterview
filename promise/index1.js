@@ -9,9 +9,7 @@ class Promise{
         
         handleFunction(this.triggerResolve.bind(this),this.triggerReject.bind(this))
     }
-    // const promise = new Promise(function(resolve,reject){
-    //   resolve('lsh')
-    // })
+	// 实例resovle去调用的triggerResolve
     triggerResolve(val){ // val :lsh
         //当前的promise状态已经变成了resolve,要执行后续的操作
         setTimeout(()=>{
@@ -46,15 +44,17 @@ class Promise{
     then(onFulfilled,onRejected){
       console.log(4)
       const { value , status } =  this;
-      return new Promise((onNextFulfilled,onNextRejected)=>{
+      return new Promise((onNextFulfilled, onNextRejected)=>{ //onNextFulfilled [Function: bound triggerResolve]
         function onFinalFulfilled(val){
           if(typeof onFulfilled !== 'function'){
             onNextFulfilled(val)
-          }else{
+          }
+		  else{
             const res = onFulfilled(val)
             if(res instanceof Promise){
               res.then(onNextFulfilled,onNextRejected)
-            }else{
+            }
+			else{
               onNextFulfilled(res)
             }
           }
@@ -62,7 +62,8 @@ class Promise{
         function onFinalRejected(error){
           if(typeof onRejected !== 'function'){
             onNextRejected(error)
-          }else{
+          }
+		  else{
             let res = null
             try{
               res = onRejected(error)
@@ -136,7 +137,9 @@ class Promise{
   }
 
   const promise = new Promise(function(resolve,reject){
-    resolve('lsh')
+	  setTimeout(()=> {
+		  resolve('lsh')
+	  }, 3000)
   })
   promise
   .then(function(str){console.log(str); return str })

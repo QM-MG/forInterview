@@ -1,3 +1,26 @@
+// 手写 new 操作符实现
+function myNew(fn, ...args) {
+  let obj = Object.create(fn.prototype);
+  let res = fn.call(obj, ...args);
+  if (res && (typeof res === "object" || typeof res === "function")) {
+    return res;
+  }
+  return obj;
+}
+// // function Person(name, age) {
+// //   this.name = name;
+// //   this.age = age;
+// // }
+// // Person.prototype.say = function() {
+// //   console.log(this.age);
+// // };
+// // let p1 = myNew(Person, "lihua", 18);
+// // console.log(p1.name);
+// // console.log(p1);
+// // p1.say();
+
+
+
 //测试
 const obj = { name: '写代码像蔡徐抻' }
 function foo() {
@@ -9,6 +32,8 @@ Function.prototype.myCall = function(context, ...args) {
     const fn = Symbol('fn');
     context = context || window;
     context[fn] = this;  // 给context添加一个方法 指向this
+	console.log(this)
+	console.log(context)
     const result = context[fn](...args);
     delete context[fn];
     return result
@@ -44,5 +69,5 @@ Function.prototype.myBind = function(context) {
     }
 }
 
-foo.myBind(obj, 'a', 'b', 'c')() 
+// foo.myBind(obj, 'a', 'b', 'c')() 
 
